@@ -1,0 +1,48 @@
+import axios, { AxiosError, type AxiosInstance } from 'axios';
+import { toast } from 'react-toastify';
+
+import HttpStatusCode from 'src/constants/httpStatusCode.enum';
+
+class Http {
+    instance: AxiosInstance;
+
+    constructor() {
+        this.instance = axios.create({
+            //Url gốc của api
+            baseURL: 'https://api-ecom.duthanhduoc.com/',
+            //set thời gian hủy request
+            timeout: 10000,
+            //cho server biết muốn gửi nhận dữ liệu theo kiểu json
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        this.instance.interceptors.response.use(
+            function (response) {
+                return response;
+            },
+            function (error: AxiosError) {
+                if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const data: any | undefined = error.response?.data;
+                    const message = data.message || error.message;
+                    toast.error(message, {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light'
+                    });
+                }
+                return Promise.reject(error);
+            }
+        );
+    }
+}
+
+const http = new Http().instance;
+
+export default http;
