@@ -10,6 +10,7 @@ import { login } from 'src/apis/auth.api';
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils';
 import { ErrorResponse } from 'src/types/utils.type';
 import { AppContext } from 'src/contexts/app.context';
+import Button from 'src/components/Button';
 
 type FormData = Omit<Schema, 'confirm_password'>;
 const loginSchema = schema.omit(['confirm_password']);
@@ -78,9 +79,14 @@ function Login() {
                                 autoComplete='on'
                             />
                             <div className='mt-3'>
-                                <button className='w-full bg-red-500 px-2 py-4 text-center text-sm uppercase text-white hover:bg-red-600'>
+                                <Button
+                                    type='submit'
+                                    className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-center text-sm uppercase text-white hover:bg-red-600'
+                                    isLoading={loginMutation.isLoading}
+                                    disabled={loginMutation.isLoading}
+                                >
                                     Đăng nhập
-                                </button>
+                                </Button>
                             </div>
                             <div className='mt-8 flex items-center justify-center'>
                                 <span className='text-gray-400'>Bạn chưa có tài khoản?</span>

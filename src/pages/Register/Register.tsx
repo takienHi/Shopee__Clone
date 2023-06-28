@@ -10,6 +10,7 @@ import { isAxiosUnprocessableEntityError } from 'src/utils/utils';
 import { ErrorResponse } from 'src/types/utils.type';
 import { useContext } from 'react';
 import { AppContext } from 'src/contexts/app.context';
+import Button from 'src/components/Button';
 
 type FormData = Schema;
 
@@ -92,12 +93,14 @@ function Register() {
                             />
 
                             <div className='mt-2'>
-                                <button
+                                <Button
                                     type='submit'
-                                    className='w-full bg-red-500 px-2 py-4 text-center text-sm uppercase text-white hover:bg-red-600'
+                                    className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-center text-sm uppercase text-white hover:bg-red-600'
+                                    isLoading={registerAccountMutation.isLoading}
+                                    disabled={registerAccountMutation.isLoading}
                                 >
                                     Đăng ký
-                                </button>
+                                </Button>
                             </div>
                             <div className='mt-8 flex items-center justify-center'>
                                 <span className='text-gray-400'>Bạn đã có tài khoản?</span>
