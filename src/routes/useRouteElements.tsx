@@ -9,18 +9,30 @@ import Register from '../pages/Register';
 import Profile from '../pages/Profile';
 // import { AppContext } from './contexts/app.context';
 import paths from 'src/constants/paths';
+import { AppContext } from 'src/contexts/app.context';
 
-const isAuthenticated = false;
 function ProtectedRoute() {
-    // const { isAuthenticated } = useContext(AppContext);
+    const { isAuthenticated } = useContext(AppContext);
     return isAuthenticated ? <Outlet /> : <Navigate to={paths.login} />;
 }
 
 function RejectedRoute() {
-    // const { isAuthenticated } = useContext(AppContext);
+    const { isAuthenticated } = useContext(AppContext);
     return !isAuthenticated ? <Outlet /> : <Navigate to={paths.home} />;
 }
-const loginAndRegisterRoute = {
+
+const publicRoute = {
+    path: '',
+    //trang index
+    index: true,
+    element: (
+        <MainLayout>
+            <ProductList />
+        </MainLayout>
+    )
+};
+
+const notLoggedRoute = {
     path: '',
     element: <RejectedRoute />,
     children: [
@@ -43,17 +55,7 @@ const loginAndRegisterRoute = {
     ]
 };
 
-const indexRoute = {
-    path: '',
-    index: true,
-    element: (
-        <MainLayout>
-            <ProductList />
-        </MainLayout>
-    )
-};
-
-const privateRoute = {
+const loggedRoute = {
     path: '',
     element: <ProtectedRoute />,
     children: [
@@ -69,7 +71,21 @@ const privateRoute = {
 };
 
 function useRouteElements() {
-    const routeElements = useRoutes([loginAndRegisterRoute, privateRoute, indexRoute]);
+    const routeElements = useRoutes([
+        notLoggedRoute,
+        loggedRoute,
+        publicRoute,
+        {
+            path: '',
+            //trang index
+            index: true,
+            element: (
+                <MainLayout>
+                    <ProductList />
+                </MainLayout>
+            )
+        }
+    ]);
     return routeElements;
 }
 

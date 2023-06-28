@@ -1,10 +1,22 @@
 import { Link } from 'react-router-dom';
 import Popover from '../Popover';
+import { useContext } from 'react';
+import { AppContext } from 'src/contexts/app.context';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from 'src/apis/auth.api';
 
-const isAuthenticated = false;
 function Header() {
+    const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
+
+    const logoutMutation = useMutation({
+        mutationFn: logout,
+        onSuccess: () => {
+            setIsAuthenticated(false);
+        }
+    });
+
     const handleLogout = () => {
-        alert('Log out');
+        logoutMutation.mutate();
     };
     return (
         <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
